@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+   tservice:
+      image: docker.io/letniy/tservice:latest
+      ports:
+         - "8080:8080"
+      volumes:
+         - ./configs:/configs
+         - ./responses:/assets
+      networks:
+         app_net:
+      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
+
+networks:
+   app_net:
+      driver: bridge
