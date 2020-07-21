@@ -14,27 +14,31 @@ It also mounts the `configs` and `assets` folders where you can configure and pu
 # Configuration
 
 Example of the config.yml file:
-```
+
+```yaml
 responses:
    response1:
       path: /lorem/ipsum
-      status_code: 404
-      response: '{"resource":"not-found"}'
+      definition:
+         status_code: 404
+         response: '{"resource":"not-found"}'
    response2:
       path: /lorem
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       slowness:
          chance: 30
          duration: 5s
    response3:
       path: /lorem/error
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       error:
          chance: 10
          status_code: 500
-```      
+```
 
 In that example, we defined three possible responses.
 
@@ -53,3 +57,7 @@ With the change 30 of 100 it will send a response with a timeout of the 5 second
 It returns the content of the file `lorem.json` that is located in `/assets` folder when TService will be requested by the path `/lorem/error`.
 
 With the change 10 of 100 it will send a response with 500 status code as the error.
+
+# Source code
+
+[github.com/olegbespalov/tservice](https://github.com/olegbespalov/tservice)
