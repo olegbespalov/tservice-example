@@ -1,63 +1,38 @@
-# TService (a.k.a test-service)
+Introduction
+------------
 
-It's a dummy service that helps to easily develop a new API that uses third-party API.
+This is an example of usage TService. TService is the test-service, a fake API that you can use to mock third-party API. It's developed lightweight, has no dependency on any programming language or framework.  It can define service slowness emulate service errors. Config or responses changes on the fly without any service restarting.
 
-By default, it returns a status 200 for any request + dumps a request into stdout.
+<p align="center"><img src="/assets/usage.gif?raw=true"/></p>
 
-# Usage
 
-The easiest way to use the TService is to run it with the docker-compose:
-`$ docker-compose up`
+Installation and usage
+-------------
 
-It also mounts the `configs` and `assets` folders where you can configure and put your responses.
+To launch it, run:
 
-# Configuration
+    docker-compose up
 
-Example of the config.yml file:
+You can also include the service in your existing compose using [docker hub's image](https://hub.docker.com/repository/docker/letniy/tservice)
 
-```yaml
-responses:
-   response1:
-      path: /lorem/ipsum
-      definition:
-         status_code: 404
-         response: '{"resource":"not-found"}'
-   response2:
-      path: /lorem
-      definition:
-         status_code: 200
-         response_file: lorem.json
-      slowness:
-         chance: 30
-         duration: 5s
-   response3:
-      path: /lorem/error
-      definition:
-         status_code: 200
-         response_file: lorem.json
-      error:
-         chance: 10
-         status_code: 500
+```yml
+tservice:
+   image: docker.io/letniy/tservice:latest
+   ports:
+      - "8085:8085"
+   volumes:
+      - ./configs:/configs
+   networks:
+      app_net:
+   entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-responsePath", "/configs/responses", "-port", "8085"]
 ```
 
-In that example, we defined three possible responses.
+Configuration
+-------------
 
-### response1
+An example of the configuration you can find in the configs directory.
 
-It returns `{"resource":"not-found"}` when tservice will be requested by the path `/lorem/ipsum`
+License
+-------
 
-### response2
-
-It returns the content of the file `lorem.json` that is located in `/assets` folder when TService will be requested by the path `/lorem`.
-
-With the change 30 of 100 it will send a response with a timeout of the 5 seconds.
-
-### response3
-
-It returns the content of the file `lorem.json` that is located in `/assets` folder when TService will be requested by the path `/lorem/error`.
-
-With the change 10 of 100 it will send a response with 500 status code as the error.
-
-# Source code
-
-[github.com/olegbespalov/tservice](https://github.com/olegbespalov/tservice)
+The TService package is licensed under the MIT. Please see the LICENSE file for details.

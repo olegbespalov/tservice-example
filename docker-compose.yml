@@ -4,13 +4,13 @@ services:
    tservice:
       image: docker.io/letniy/tservice:latest
       ports:
-         - "8080:8080"
+         - "8085:8085"
       volumes:
          - ./configs:/configs
-         - ./responses:/assets
+         - ./responses:/responses
       networks:
          app_net:
-      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
+      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-responsePath", "/responses", "-port", "8085"]
 
 networks:
    app_net:
